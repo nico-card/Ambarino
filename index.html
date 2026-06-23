@@ -74,7 +74,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Animación de línea expansiva en el menú */
         nav a::after {
             content: '';
             position: absolute;
@@ -97,7 +96,7 @@
             transform-origin: bottom left;
         }
 
-        /* SECCIÓN HERO (Animada al cargar) */
+        /* SECCIÓN HERO */
         .intro {
             text-align: center;
             max-width: 700px;
@@ -160,7 +159,7 @@
             transform: translateY(0);
         }
 
-        /* 1. SECCIÓN: GALERÍA DE AUTOR */
+        /* 1. SECCIÓN: GALERÍA DE AUTOR CON EFECTO DE TEXTO SUPERPUESTO */
         .galeria-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -172,8 +171,7 @@
             background-color: var(--card-bg);
             border: 1px solid rgba(207, 168, 127, 0.2);
             overflow: hidden;
-            text-align: center;
-            padding-bottom: 20px;
+            position: relative; /* Esencial para colocar el texto encima */
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
@@ -182,41 +180,73 @@
             box-shadow: 0 10px 25px rgba(74, 54, 41, 0.08);
         }
 
-        /* Contenedor para controlar el zoom de la imagen */
         .galeria-img-container {
             width: 100%;
-            height: 350px;
+            height: 420px; /* Un poco más alta para que luzca como portafolio artístico */
             overflow: hidden;
-            background-color: #eaddd3; /* Color de respaldo mientras carga la foto */
+            background-color: #eaddd3;
         }
 
-        /* CLASE FLUIDA PARA ADAPTAR TUS IMÁGENES REALES */
         .imagen-fluida {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Recorta la imagen con elegancia sin deformarla */
+            object-fit: cover;
             display: block;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Efecto zoom sutil al pasar el mouse por la tarjeta de galería */
+        /* LA CAPA OSCURA QUE APARECE CON EL TEXTO (HOVER) */
+        .capa-descripcion {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(74, 54, 41, 0.85); /* Fondo marrón de tu marca con opacidad */
+            color: var(--bg-color); /* Texto nude claro para contraste */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            opacity: 0; /* Oculto por defecto */
+            transition: opacity 0.4s ease;
+        }
+
+        /* Animación del texto interior al hacer hover */
+        .capa-descripcion h3 {
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .capa-descripcion p {
+            font-size: 14px;
+            font-style: italic;
+            opacity: 0.9;
+            transform: translateY(20px);
+            transition: transform 0.4s ease 0.1s; /* Ligero retraso para dar fluidez */
+        }
+
+        /* ACTIVACIÓN DEL EFECTO AL PASAR EL MOUSE */
+        .galeria-item:hover .capa-descripcion {
+            opacity: 1;
+        }
+
+        .galeria-item:hover .capa-descripcion h3,
+        .galeria-item:hover .capa-descripcion p {
+            transform: translateY(0);
+        }
+
         .galeria-item:hover .imagen-fluida {
             transform: scale(1.06);
         }
 
-        .galeria-item h3 {
-            margin-top: 15px;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-
-        .galeria-item p {
-            font-size: 13px;
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-
-        /* 2. SECCIÓN: TIENDA (Piezas genéricas) */
+        /* 2. SECCIÓN: TIENDA */
         .tienda-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -242,7 +272,7 @@
 
         .tienda-img-container {
             width: 100%;
-            height: 250px; /* Un poco más bajas para la tienda comercial */
+            height: 250px;
             overflow: hidden;
             margin-bottom: 15px;
             background-color: #f0f0f0;
@@ -254,7 +284,6 @@
             color: var(--text-color);
         }
 
-        /* Botón con efecto de deslizamiento de color */
         .btn-comprar {
             background-color: var(--text-color);
             color: var(--white);
@@ -287,7 +316,7 @@
             width: 100%;
         }
 
-        /* SECCIÓN CONTACTO / BODAS */
+        /* SECCIÓN CONTACTO */
         .cta-bodas {
             background-color: var(--white);
             text-align: center;
@@ -331,19 +360,11 @@
             border-top: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* ANIMACIONES NATIVAS (CSS Keyframes) */
         @keyframes fadeInSutil {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Adaptabilidad para Teléfonos Celulares */
         @media (max-width: 768px) {
             .galeria-grid, .tienda-grid {
                 grid-template-columns: 1fr;
@@ -353,7 +374,7 @@
 </head>
 <body>
 
-    <!-- MENÚ / NAVEGACIÓN -->
+    <!-- MENÚ -->
     <header>
         <div class="logo">Ambarino 1998</div>
         <nav>
@@ -365,24 +386,27 @@
 
     <div class="container">
 
-        <!-- INTRODUCCIÓN DE LA MARCA -->
+        <!-- INTRODUCCIÓN -->
         <section class="intro">
             <h1>Joyería de autor hecha a mano</h1>
             <p>Modelamos metales nobles y seleccionamos gemas auténticas para dar vida a piezas con historia, mística y carácter.</p>
         </section>
 
-        <!-- SECCIÓN 1: GALERÍA DE AUTOR (Piezas que haces) -->
+        <!-- SECCIÓN 1: GALERÍA DE AUTOR (Con textos ocultos interactivos) -->
         <section id="galeria" class="revelar">
             <h2 class="section-title">Piezas de Autor / Galería</h2>
             <div class="galeria-grid">
                 
-                <!-- Pieza de Autor 1 (Ejemplo: Reemplaza 'imagenes/anillo-verde.jpg' por tu ruta real) -->
+                <!-- Pieza de Autor 1 -->
                 <div class="galeria-item">
                     <div class="galeria-img-container">
                         <img src="imagenes/anillo-verde.jpg" alt="Anillo Esmeralda Ambarino 1998" class="imagen-fluida">
                     </div>
-                    <h3>Anillo Esmeralda</h3>
-                    <p>Oro de 18k esculpido a mano.</p>
+                    <!-- Esta es la capa que se activa al pasar el mouse -->
+                    <div class="capa-descripcion">
+                        <h3>Anillo Esmeralda</h3>
+                        <p>Oro de 18k esculpido a mano. Cuenta con una esmeralda natural de corte simétrico, inspirada en las líneas clásicas del taller.</p>
+                    </div>
                 </div>
 
                 <!-- Pieza de Autor 2 -->
@@ -390,8 +414,10 @@
                     <div class="galeria-img-container">
                         <img src="imagenes/amuleto-777.jpg" alt="Amuleto 777 Plata" class="imagen-fluida">
                     </div>
-                    <h3>Placa Amuleto "777"</h3>
-                    <p>Plata de ley con detalles texturizados.</p>
+                    <div class="capa-descripcion">
+                        <h3>Placa Amuleto "777"</h3>
+                        <p>Plata de ley texturizada. Una pieza amuleto con relieves rústicos hechos directamente en el banco de trabajo.</p>
+                    </div>
                 </div>
 
                 <!-- Pieza de Autor 3 -->
@@ -399,19 +425,20 @@
                     <div class="galeria-img-container">
                         <img src="imagenes/brazalete.jpg" alt="Brazalete Joyería de Autor" class="imagen-fluida">
                     </div>
-                    <h3>Brazalete Minimalista</h3>
-                    <p>Diseño geométrico en plata pura.</p>
+                    <div class="capa-descripcion">
+                        <h3>Brazalete Minimalista</h3>
+                        <p>Diseño geométrico en plata pura. Un acabado pulido tipo espejo que juega con la luz natural.</p>
+                    </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- SECCIÓN 2: LA TIENDA (Piezas genéricas / Stock futuro) -->
+        <!-- SECCIÓN 2: LA TIENDA -->
         <section id="tienda" class="revelar">
             <h2 class="section-title">La Tienda / Stock Disponible</h2>
             <div class="tienda-grid">
                 
-                <!-- Producto Genérico 1 -->
                 <div class="producto-card">
                     <div class="tienda-img-container">
                         <img src="imagenes/cadena-basica.jpg" alt="Cadena Eslabón Clásica" class="imagen-fluida">
@@ -421,7 +448,6 @@
                     <button class="btn-comprar">Añadir al Carrito</button>
                 </div>
 
-                <!-- Producto Genérico 2 -->
                 <div class="producto-card">
                     <div class="tienda-img-container">
                         <img src="imagenes/topos-plata.jpg" alt="Topos de Plata" class="imagen-fluida">
@@ -431,7 +457,6 @@
                     <button class="btn-comprar">Añadir al Carrito</button>
                 </div>
 
-                <!-- Producto Genérico 3 -->
                 <div class="producto-card">
                     <div class="tienda-img-container">
                         <img src="imagenes/anillo-liso.jpg" alt="Anillo Ajustable Básico" class="imagen-fluida">
@@ -444,22 +469,19 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 3: CITAS, ALTO TICKET Y BODAS -->
+        <!-- SECCIÓN 3: CONTACTO -->
         <section id="contacto" class="cta-bodas revelar">
             <h2 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">¿Buscas algo único o Argollas de Matrimonio?</h2>
             <p>Agenda una sesión personalizada para diseñar tus joyas ideales o argollas de boda desde cero.</p>
-            <!-- REEMPLAZA 'TU_NUMERO' con tu teléfono real, ej: 573001234567 -->
             <a href="https://wa.me/TU_NUMERO?text=Hola%20Ambarino,%20me%20interesa%20agendar%20una%20asesoría%20para%20un%20diseño%20personalizado" class="btn-whatsapp" target="_blank">Contactar por WhatsApp</a>
         </section>
 
     </div>
 
-    <!-- PIE DE PÁGINA -->
     <footer>
         <p>&copy; 2026 Ambarino 1998 | Diseñado con dedicación.</p>
     </footer>
 
-    <!-- INTERACTIVIDAD CON JAVASCRIPT (Maneja las apariciones fluidas al bajar la pantalla) -->
     <script>
         function revelarElementos() {
             const elementos = document.querySelectorAll('.revelar');
@@ -467,7 +489,7 @@
             elementos.forEach(elemento => {
                 const ventanaTop = window.innerHeight;
                 const elementoTop = elemento.getBoundingClientRect().top;
-                const margenRevelado = 100; // Sensibilidad del scroll antes de aparecer
+                const margenRevelado = 100;
                 
                 if (elementoTop < ventanaTop - margenRevelado) {
                     elemento.classList.add('activo');
@@ -475,7 +497,6 @@
             });
         }
 
-        // Ejecutar las animaciones al hacer scroll y al cargar la página por primera vez
         window.addEventListener('scroll', revelarElementos);
         window.addEventListener('DOMContentLoaded', revelarElementos);
     </script>
