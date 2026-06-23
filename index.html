@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambarino 1998 | Tienda y Atelier de Joyería</title>
+    <style>
+        /* Paleta de colores basada en tu marca */
+        :root {
+            --bg-color: #f7f1eb;       /* Nude de fondo */
+            --text-color: #4a3629;     /* Marrón oscuro para textos */
+            --accent-gold: #cfa87f;    /* Dorado de la marca */
+            --white: #ffffff;
+            --card-bg: #fffbf7;
+        }
+
+        /* ACTIVACIÓN DE DESPLAZAMIENTO SUAVE */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', 'Georgia', serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* BARRA DE NAVEGACIÓN */
+        header {
+            background-color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(207, 168, 127, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            font-size: 26px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: transform 0.4s ease;
+            display: inline-block;
+        }
+        
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin: 0 15px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        /* Animación de línea expansiva en el menú */
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-gold);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        nav a:hover {
+            color: var(--accent-gold);
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* SECCIÓN HERO (Animada al cargar) */
+        .intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 0 20px;
+            animation: fadeInSutil 1.2s ease-out forwards;
+        }
+
+        .intro h1 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .intro p {
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* CONTENEDOR GENERAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background-color: var(--accent-gold);
+            margin: 10px auto 0;
+            transition: width 0.4s ease;
+        }
+
+        .section-title:hover::after {
+            width: 80px;
+        }
+
+        /* ANIMACIÓN AL HACER SCROLL */
+        .revelar {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+
+        .revelar.activo {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1. SECCIÓN: GALERÍA DE AUTOR */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        .galeria-item {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(207, 168, 127, 0.2);
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(74, 54, 41, 0.08);
+        }
+
+        /* Contenedor para controlar el zoom de la imagen */
+        .galeria-img-container {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            background-color: #eaddd3; /* Color de respaldo mientras carga la foto */
+        }
+
+        /* CLASE FLUIDA PARA ADAPTAR TUS IMÁGENES REALES */
+        .imagen-fluida {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Recorta la imagen con elegancia sin deformarla */
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Efecto zoom sutil al pasar el mouse por la tarjeta de galería */
+        .galeria-item:hover .imagen-fluida {
+            transform: scale(1.06);
+        }
+
+        .galeria-item h3 {
+            margin-top: 15px;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+
+        .galeria-item p {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        /* 2. SECCIÓN: TIENDA (Piezas genéricas) */
+        .tienda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .producto-card {
+            background-color: var(--white);
+            border: 1px solid rgba(0,0,0,0.03);
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-gold);
+        }
+
+        .tienda-img-container {
+            width: 100%;
+            height: 250px; /* Un poco más bajas para la tienda comercial */
+            overflow: hidden;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+        }
+
+        .precio {
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--text-color);
+        }
+
+        /* Botón con efecto de deslizamiento de color */
+        .btn-comprar {
+            background-color: var(--text-color);
+            color: var(--white);
+            padding: 12px;
+            border: none;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            transition: color 0.4s ease;
+        }
+
+        .btn-comprar::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 100%;
+            background-color: var(--accent-gold);
+            transition: width 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-comprar:hover {
+            color: var(--white);
+        }
+
+        .btn-comprar:hover::before {
+            width: 100%;
+        }
+
+        /* SECCIÓN CONTACTO / BODAS */
+        .cta-bodas {
+            background-color: var(--white);
+            text-align: center;
+            padding: 60px 20px;
+            border: 1px solid rgba(207, 168, 127, 0.3);
+            margin-bottom: 80px;
+            transition: box-shadow 0.4s ease;
+        }
+
+        .cta-bodas:hover {
+            box-shadow: 0 15px 35px rgba(207, 168, 127, 0.1);
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: var(--white);
+            padding: 15px 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(207, 168, 127, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            transform: scale(1.05);
+            background-color: #be966b;
+            box-shadow: 0 6px 15px rgba(207, 168, 127, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 12px;
+            opacity: 0.7;
+            background-color: var(--white);
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* ANIMACIONES NATIVAS (CSS Keyframes) */
+        @keyframes fadeInSutil {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Adaptabilidad para Teléfonos Celulares */
+        @media (max-width: 768px) {
+            .galeria-grid, .tienda-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ / NAVEGACIÓN -->
+    <header>
+        <div class="logo">Ambarino 1998</div>
+        <nav>
+            <a href="#galeria">Mis Creaciones</a>
+            <a href="#tienda">Tienda</a>
+            <a href="#contacto">Bodas & Citas</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- INTRODUCCIÓN DE LA MARCA -->
+        <section class="intro">
+            <h1>Joyería de autor hecha a mano</h1>
+            <p>Modelamos metales nobles y seleccionamos gemas auténticas para dar vida a piezas con historia, mística y carácter.</p>
+        </section>
+
+        <!-- SECCIÓN 1: GALERÍA DE AUTOR (Piezas que haces) -->
+        <section id="galeria" class="revelar">
+            <h2 class="section-title">Piezas de Autor / Galería</h2>
+            <div class="galeria-grid">
+                
+                <!-- Pieza de Autor 1 (Ejemplo: Reemplaza 'imagenes/anillo-verde.jpg' por tu ruta real) -->
+                <div class="galeria-item">
+                    <div class="galeria-img-container">
+                        <img src="imagenes/anillo-verde.jpg" alt="Anillo Esmeralda Ambarino 1998" class="imagen-fluida">
+                    </div>
+                    <h3>Anillo Esmeralda</h3>
+                    <p>Oro de 18k esculpido a mano.</p>
+                </div>
+
+                <!-- Pieza de Autor 2 -->
+                <div class="galeria-item">
+                    <div class="galeria-img-container">
+                        <img src="imagenes/amuleto-777.jpg" alt="Amuleto 777 Plata" class="imagen-fluida">
+                    </div>
+                    <h3>Placa Amuleto "777"</h3>
+                    <p>Plata de ley con detalles texturizados.</p>
+                </div>
+
+                <!-- Pieza de Autor 3 -->
+                <div class="galeria-item">
+                    <div class="galeria-img-container">
+                        <img src="imagenes/brazalete.jpg" alt="Brazalete Joyería de Autor" class="imagen-fluida">
+                    </div>
+                    <h3>Brazalete Minimalista</h3>
+                    <p>Diseño geométrico en plata pura.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: LA TIENDA (Piezas genéricas / Stock futuro) -->
+        <section id="tienda" class="revelar">
+            <h2 class="section-title">La Tienda / Stock Disponible</h2>
+            <div class="tienda-grid">
+                
+                <!-- Producto Genérico 1 -->
+                <div class="producto-card">
+                    <div class="tienda-img-container">
+                        <img src="imagenes/cadena-basica.jpg" alt="Cadena Eslabón Clásica" class="imagen-fluida">
+                    </div>
+                    <h4>Cadena Eslabón Clásica</h4>
+                    <p class="precio">$120.000 COP</p>
+                    <button class="btn-comprar">Añadir al Carrito</button>
+                </div>
+
+                <!-- Producto Genérico 2 -->
+                <div class="producto-card">
+                    <div class="tienda-img-container">
+                        <img src="imagenes/topos-plata.jpg" alt="Topos de Plata" class="imagen-fluida">
+                    </div>
+                    <h4>Topos de Plata Esenciales</h4>
+                    <p class="precio">$65.000 COP</p>
+                    <button class="btn-comprar">Añadir al Carrito</button>
+                </div>
+
+                <!-- Producto Genérico 3 -->
+                <div class="producto-card">
+                    <div class="tienda-img-container">
+                        <img src="imagenes/anillo-liso.jpg" alt="Anillo Ajustable Básico" class="imagen-fluida">
+                    </div>
+                    <h4>Anillo Liso Ajustable</h4>
+                    <p class="precio">$85.000 COP</p>
+                    <button class="btn-comprar">Añadir al Carrito</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CITAS, ALTO TICKET Y BODAS -->
+        <section id="contacto" class="cta-bodas revelar">
+            <h2 style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">¿Buscas algo único o Argollas de Matrimonio?</h2>
+            <p>Agenda una sesión personalizada para diseñar tus joyas ideales o argollas de boda desde cero.</p>
+            <!-- REEMPLAZA 'TU_NUMERO' con tu teléfono real, ej: 573001234567 -->
+            <a href="https://wa.me/TU_NUMERO?text=Hola%20Ambarino,%20me%20interesa%20agendar%20una%20asesoría%20para%20un%20diseño%20personalizado" class="btn-whatsapp" target="_blank">Contactar por WhatsApp</a>
+        </section>
+
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 Ambarino 1998 | Diseñado con dedicación.</p>
+    </footer>
+
+    <!-- INTERACTIVIDAD CON JAVASCRIPT (Maneja las apariciones fluidas al bajar la pantalla) -->
+    <script>
+        function revelarElementos() {
+            const elementos = document.querySelectorAll('.revelar');
+            
+            elementos.forEach(elemento => {
+                const ventanaTop = window.innerHeight;
+                const elementoTop = elemento.getBoundingClientRect().top;
+                const margenRevelado = 100; // Sensibilidad del scroll antes de aparecer
+                
+                if (elementoTop < ventanaTop - margenRevelado) {
+                    elemento.classList.add('activo');
+                }
+            });
+        }
+
+        // Ejecutar las animaciones al hacer scroll y al cargar la página por primera vez
+        window.addEventListener('scroll', revelarElementos);
+        window.addEventListener('DOMContentLoaded', revelarElementos);
+    </script>
+
+</body>
+</html>
